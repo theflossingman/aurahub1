@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test</title>
+</head>
+<body>
+    <h1>Test Page</h1>
+    <button onclick="testLogin()">Test Login</button>
+    <div id="loginScreen" style="display: block;">Login Screen</div>
+    <div id="dashboardScreen" style="display: none;">Dashboard Screen</div>
+    
+    <script>
+        function testLogin() {
+            console.log('Test login button clicked');
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboardScreen').style.display = 'block';
+            console.log('Screen switch completed');
+        }
+    </script>
+</body>
+</html>

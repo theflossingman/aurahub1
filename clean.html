@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura OS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+        }
+        .user-card {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 10px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .user-card:hover {
+            transform: scale(1.05);
+        }
+        .dashboard {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .dashboard h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .logout-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="loginScreen">
+        <h1>Aura OS</h1>
+        <p>Choose your account:</p>
+        
+        <div class="user-card" onclick="showDashboard('Max')">
+            <h2>Max</h2>
+            <p>Online</p>
+        </div>
+        
+        <div class="user-card" onclick="showDashboard('Sarah')">
+            <h2>Sarah</h2>
+            <p>Away</p>
+        </div>
+        
+        <div class="user-card" onclick="showDashboard('Alex')">
+            <h2>Alex</h2>
+            <p>Offline</p>
+        </div>
+    </div>
+    
+    <div id="dashboard">
+        <h1>Welcome to Aura OS!</h1>
+        <p id="userName"></p>
+        <button class="logout-btn" onclick="showLogin()">Logout</button>
+    </div>
+    
+    <script>
+        function showDashboard(name) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('userName').textContent = 'Logged in as: ' + name;
+        }
+        
+        function showLogin() {
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

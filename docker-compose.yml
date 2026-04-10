@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  aura-os:
+    build: https://github.com/theflossingman/auraos.git#main
+    container_name: aura-os
+    ports:
+      - "4036:3002"
+    volumes:
+      - /synology/maxdocker/auraos:/app/data
+    environment:
+      - TZ=America/New_York
+      - NODE_ENV=production
+      - PORT=3002
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3002/api/aura', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - aura-network
+
+networks:
+  aura-network:
+    driver: bridge

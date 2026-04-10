@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Aura Hub - Family Dashboard</title>
+    <meta name="description" content="A beautiful family PWA dashboard inspired by Umbrel OS">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/animations.css">
+    
+    <!-- PWA Install Prompt -->
+    <script src="scripts/pwa-install.js" defer></script>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background">
+        <div class="gradient-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+        </div>
+        <div class="noise-overlay"></div>
+    </div>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="screen login-screen">
+        <div class="login-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-icon">Aura Hub</div>
+                </div>
+                <h1 class="app-title">Aura Hub</h1>
+                <p class="app-subtitle">Family Dashboard</p>
+            </div>
+            
+            <div class="users-grid">
+                <a href="#" class="user-card" data-user="max" onclick="showPasswordModal('max', 'M', 'avatar-1'); return false;">
+                    <div class="user-avatar">
+                        <div class="avatar-gradient avatar-1"></div>
+                        <span class="user-initial">M</span>
+                    </div>
+                    <h3 class="user-name">Max</h3>
+                    <p class="user-status">Online</p>
+                </a>
+                
+                <a href="#" class="user-card" data-user="gigi" onclick="showPasswordModal('gigi', 'G', 'avatar-2'); return false;">
+                    <div class="user-avatar">
+                        <div class="avatar-gradient avatar-2"></div>
+                        <span class="user-initial">G</span>
+                    </div>
+                    <h3 class="user-name">Gigi</h3>
+                    <p class="user-status">Online</p>
+                </a>
+                
+                <a href="#" class="user-card" data-user="marco" onclick="showPasswordModal('marco', 'M', 'avatar-3'); return false;">
+                    <div class="user-avatar">
+                        <div class="avatar-gradient avatar-3"></div>
+                        <span class="user-initial">M</span>
+                    </div>
+                    <h3 class="user-name">Marco</h3>
+                    <p class="user-status">Online</p>
+                </a>
+                
+                <a href="#" class="user-card" data-user="dezi" onclick="showPasswordModal('dezi', 'D', 'avatar-4'); return false;">
+                    <div class="user-avatar">
+                        <div class="avatar-gradient avatar-4"></div>
+                        <span class="user-initial">D</span>
+                    </div>
+                    <h3 class="user-name">Dezi</h3>
+                    <p class="user-status">Online</p>
+                </a>
+                
+                <a href="#" class="user-card" data-user="sevi" onclick="showPasswordModal('sevi', 'S', 'avatar-5'); return false;">
+                    <div class="user-avatar">
+                        <div class="avatar-gradient avatar-5"></div>
+                        <span class="user-initial">S</span>
+                    </div>
+                    <h3 class="user-name">Sevi</h3>
+                    <p class="user-status">Online</p>
+                </a>
+                
+                <div class="user-card add-user">
+                    <div class="add-icon">+</div>
+                    <h3 class="user-name">Add User</h3>
+                </div>
+            </div>
+            
+            <div class="login-footer">
+                <p class="version">v1.0.0</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" class="password-modal hidden">
+        <div class="modal-overlay" onclick="closePasswordModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Enter Password</h3>
+                <button class="modal-close" onclick="closePasswordModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="password-user-info">
+                    <div class="password-avatar">
+                        <div class="avatar-gradient avatar-1"></div>
+                        <span class="password-user-initial">M</span>
+                    </div>
+                    <h4 class="password-user-name">Max</h4>
+                </div>
+                <div class="password-input-group">
+                    <input type="password" id="passwordInput" class="password-input" placeholder="Enter password" onkeypress="handlePasswordKeyPress(event)">
+                    <div class="password-toggle" onclick="togglePasswordVisibility()">
+                        <span id="passwordToggleIcon">👁️</span>
+                    </div>
+                </div>
+                <div id="passwordError" class="password-error hidden">Incorrect password. Please try again.</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePasswordModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="authenticateUser()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Marketplace Modal -->
+    <div id="marketplaceModal" class="password-modal hidden">
+        <div class="modal-overlay" onclick="closeMarketplace()"></div>
+        <div class="modal-content marketplace-modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Marketplace</h3>
+                <button class="modal-close" onclick="closeMarketplace()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="marketplace-tabs">
+                    <div class="tab-navigation">
+                        <button class="tab-btn active" onclick="switchTab('background')" id="backgroundTab">Background</button>
+                        <button class="tab-btn" onclick="switchTab('themes')" id="themesTab">Themes</button>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Background Tab -->
+                        <div class="tab-pane active" id="backgroundPane">
+                            <h4>Choose Your Background</h4>
+                            <div class="background-grid">
+                                <div class="bg-option" onclick="selectBackground('gradient1')">
+                                    <div class="bg-preview gradient-preview-1 animated-bg-1"></div>
+                                    <p>Ocean Blue</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient2')">
+                                    <div class="bg-preview gradient-preview-2 animated-bg-2"></div>
+                                    <p>Sunset Purple</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient3')">
+                                    <div class="bg-preview gradient-preview-3 animated-bg-3"></div>
+                                    <p>Dark Forest</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient4')">
+                                    <div class="bg-preview gradient-preview-4 animated-bg-4"></div>
+                                    <p>Galaxy Dark</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient5')">
+                                    <div class="bg-preview gradient-preview-5 animated-bg-5"></div>
+                                    <p>Golden Hour</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient6')">
+                                    <div class="bg-preview gradient-preview-6 animated-bg-6"></div>
+                                    <p>Rose Pink</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient7')">
+                                    <div class="bg-preview gradient-preview-7 animated-bg-7"></div>
+                                    <p>Deep Purple</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient8')">
+                                    <div class="bg-preview gradient-preview-8 animated-bg-8"></div>
+                                    <p>Fire Orange</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient9')">
+                                    <div class="bg-preview gradient-preview-9 animated-bg-9"></div>
+                                    <p>Dark Ocean</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient10')">
+                                    <div class="bg-preview gradient-preview-10 animated-bg-10"></div>
+                                    <p>Ruby Red</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient11')">
+                                    <div class="bg-preview gradient-preview-11 animated-bg-11"></div>
+                                    <p>Forest Night</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient12')">
+                                    <div class="bg-preview gradient-preview-12 animated-bg-12"></div>
+                                    <p>Wine Red</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient13')">
+                                    <div class="bg-preview gradient-preview-13 animated-bg-13"></div>
+                                    <p>Sunset Blaze</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient14')">
+                                    <div class="bg-preview gradient-preview-14 animated-bg-14"></div>
+                                    <p>Midnight Blue</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient15')">
+                                    <div class="bg-preview gradient-preview-15 animated-bg-15"></div>
+                                    <p>Deep Ocean</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient16')">
+                                    <div class="bg-preview gradient-preview-16 animated-bg-16"></div>
+                                    <p>Coral Reef</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient17')">
+                                    <div class="bg-preview gradient-preview-17 animated-bg-17"></div>
+                                    <p>Midnight Sky</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient18')">
+                                    <div class="bg-preview gradient-preview-18 animated-bg-18"></div>
+                                    <p>Dark Sunset</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient19')">
+                                    <div class="bg-preview gradient-preview-19 animated-bg-19"></div>
+                                    <p>Deep Blue</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient20')">
+                                    <div class="bg-preview gradient-preview-20 animated-bg-20"></div>
+                                    <p>Sunset Gold</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient21')">
+                                    <div class="bg-preview gradient-preview-21 animated-bg-21"></div>
+                                    <p>Emerald Forest</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient22')">
+                                    <div class="bg-preview gradient-preview-22 animated-bg-22"></div>
+                                    <p>Ruby Red</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient23')">
+                                    <div class="bg-preview gradient-preview-23 animated-bg-23"></div>
+                                    <p>Navy Blue</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient24')">
+                                    <div class="bg-preview gradient-preview-24 animated-bg-24"></div>
+                                    <p>Violet Purple</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient25')">
+                                    <div class="bg-preview gradient-preview-25 animated-bg-25"></div>
+                                    <p>Autumn Leaves</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient26')">
+                                    <div class="bg-preview gradient-preview-26 animated-bg-26"></div>
+                                    <p>Cotton Candy</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient27')">
+                                    <div class="bg-preview gradient-preview-27 animated-bg-27"></div>
+                                    <p>Storm Gray</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient28')">
+                                    <div class="bg-preview gradient-preview-28 animated-bg-28"></div>
+                                    <p>Dark Green</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient29')">
+                                    <div class="bg-preview gradient-preview-29 animated-bg-29"></div>
+                                    <p>Hot Pink</p>
+                                    <span class="price">Free</span>
+                                </div>
+                                <div class="bg-option" onclick="selectBackground('gradient30')">
+                                    <div class="bg-preview gradient-preview-30 animated-bg-30"></div>
+                                    <p>Dark Teal</p>
+                                    <span class="price">Free</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Themes Tab (Empty for now) -->
+                        <div class="tab-pane" id="themesPane">
+                            <h4>Themes</h4>
+                            <div class="empty-section">
+                                <p>Coming soon...</p>
+                                <p>Themes will be available here in the future!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeMarketplace()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aura Control Modal -->
+    <div id="auraControlModal" class="password-modal hidden">
+        <div class="modal-overlay" onclick="closeAuraControl()"></div>
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Aura Control (Admin)</h3>
+                <button class="modal-close" onclick="closeAuraControl()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="aura-control">
+                    <div class="reset-section">
+                        <h4>Admin Controls</h4>
+                        <p class="reset-description">This will reset all users' aura back to 0. This action cannot be undone.</p>
+                        <div class="control-actions">
+                            <button class="btn btn-danger" onclick="resetAllAura()">Reset All Aura to 0</button>
+                            <button class="btn btn-secondary" onclick="refreshAuraControl()">Refresh Data</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeAuraControl()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aura Tracker App Screen -->
+    <div id="auraTrackerScreen" class="screen app-screen hidden">
+        <div class="app-container">
+            <!-- App Header -->
+            <header class="app-header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="closeApp('aura-tracker')">
+                        <span>&larr;</span>
+                        <span>Back</span>
+                    </button>
+                    <h2 class="app-title">Aura Tracker</h2>
+                </div>
+                <div class="header-right">
+                    <button class="refresh-btn" onclick="refreshAuraData()" title="Refresh Aura Data">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M23 4v6h-6"/>
+                            <path d="M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                    </button>
+                    <button class="settings-btn" onclick="viewDetails()" title="Debug Info">?</button>
+                    <button class="settings-btn" onclick="openAuraControl()" title="Aura Control (Admin Only)" id="auraControlBtn" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- App Content -->
+            <main class="app-main">
+                <!-- Notification Container -->
+                <div id="notificationContainer" class="notification-container"></div>
+                
+                <div class="people-grid">
+                    <div class="person-card" onclick="selectPerson('max')">
+                        <h3 class="person-name">Max</h3>
+                        <div class="card-middle">
+                            <span class="aura-text">Aura</span>
+                            <span class="aura-number">0</span>
+                        </div>
+                        <div class="card-controls">
+                            <button class="card-btn card-btn-minus" onclick="event.stopPropagation(); cardAction('max', 'decrement')">−</button>
+                            <button class="card-btn card-btn-plus" onclick="event.stopPropagation(); cardAction('max', 'increment')">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="person-card" onclick="selectPerson('gigi')">
+                        <h3 class="person-name">Gigi</h3>
+                        <div class="card-middle">
+                            <span class="aura-text">Aura</span>
+                            <span class="aura-number">0</span>
+                        </div>
+                        <div class="card-controls">
+                            <button class="card-btn card-btn-minus" onclick="event.stopPropagation(); cardAction('gigi', 'decrement')">−</button>
+                            <button class="card-btn card-btn-plus" onclick="event.stopPropagation(); cardAction('gigi', 'increment')">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="person-card" onclick="selectPerson('marco')">
+                        <h3 class="person-name">Marco</h3>
+                        <div class="card-middle">
+                            <span class="aura-text">Aura</span>
+                            <span class="aura-number">0</span>
+                        </div>
+                        <div class="card-controls">
+                            <button class="card-btn card-btn-minus" onclick="event.stopPropagation(); cardAction('marco', 'decrement')">−</button>
+                            <button class="card-btn card-btn-plus" onclick="event.stopPropagation(); cardAction('marco', 'increment')">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="person-card" onclick="selectPerson('dezi')">
+                        <h3 class="person-name">Dezi</h3>
+                        <div class="card-middle">
+                            <span class="aura-text">Aura</span>
+                            <span class="aura-number">0</span>
+                        </div>
+                        <div class="card-controls">
+                            <button class="card-btn card-btn-minus" onclick="event.stopPropagation(); cardAction('dezi', 'decrement')">−</button>
+                            <button class="card-btn card-btn-plus" onclick="event.stopPropagation(); cardAction('dezi', 'increment')">+</button>
+                        </div>
+                    </div>
+                    
+                    <div class="person-card" onclick="selectPerson('sevi')">
+                        <h3 class="person-name">Sevi</h3>
+                        <div class="card-middle">
+                            <span class="aura-text">Aura</span>
+                            <span class="aura-number">0</span>
+                        </div>
+                        <div class="card-controls">
+                            <button class="card-btn card-btn-minus" onclick="event.stopPropagation(); cardAction('sevi', 'decrement')">−</button>
+                            <button class="card-btn card-btn-plus" onclick="event.stopPropagation(); cardAction('sevi', 'increment')">+</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboardScreen" class="screen dashboard-screen hidden">
+        <div class="dashboard-container">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <div class="logo-small">Aura Hub</div>
+                    <h2 class="dashboard-title">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="user-info">
+                        <div class="user-avatar-small">
+                            <div class="avatar-gradient avatar-1"></div>
+                            <span class="user-initial-small">M</span>
+                        </div>
+                        <div class="user-details">
+                            <h3 class="user-name-small">Max</h3>
+                            <p class="user-status-small">Online</p>
+                        </div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
+            </header>
+
+            <!-- Main Content -->
+            <main class="dashboard-main">
+                <!-- Action Cards -->
+                <section class="actions-section">
+                    <h2 class="section-title">Quick Actions</h2>
+                    <div class="actions-grid">
+                        <div class="action-card" onclick="openApp('aura-tracker')">
+                            <div class="action-icon">🌟</div>
+                            <h4>Aura Tracker</h4>
+                            <p>Track your aura</p>
+                        </div>
+                        
+                        <div class="action-card" onclick="openApp('photos')">
+                            <div class="action-icon">🖼️</div>
+                            <h4>Photos</h4>
+                            <p>View your memories</p>
+                        </div>
+                        
+                        <div class="action-card" onclick="openApp('notes')">
+                            <div class="action-icon">📝</div>
+                            <h4>Notes</h4>
+                            <p>Quick notes</p>
+                        </div>
+                        
+                        <div class="action-card" onclick="openMarketplace()">
+                            <div class="action-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                </svg>
+                            </div>
+                            <h4>Marketplace</h4>
+                            <p>Customize your experience</p>
+                        </div>
+                    </div>
+                </section>
+                
+                            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // User passwords (in a real app, these would be properly hashed and secured)
+        const userPasswords = {
+            'max': '1234',
+            'gigi': '1234',
+            'marco': '1234',
+            'dezi': '1234',
+            'sevi': '1234'
+        };
+
+        let currentUser = null;
+        
+        // Aura data storage (synced from server)
+        let auraData = {
+            max: 0,
+            gigi: 0,
+            marco: 0,
+            dezi: 0,
+            sevi: 0
+        };
+        
+        // Daily aura tracking data (synced from server)
+        let dailyAuraData = {
+            max: { 
+                dezi: 0, 
+                gigi: 0, 
+                marco: 0, 
+                sevi: 0, 
+                date: getCurrentDateString() 
+            },
+            gigi: { 
+                max: 0, 
+                dezi: 0, 
+                marco: 0, 
+                sevi: 0, 
+                date: getCurrentDateString() 
+            },
+            marco: { 
+                max: 0, 
+                gigi: 0, 
+                dezi: 0, 
+                sevi: 0, 
+                date: getCurrentDateString() 
+            },
+            dezi: { 
+                max: 0, 
+                gigi: 0, 
+                marco: 0, 
+                sevi: 0, 
+                date: getCurrentDateString() 
+            },
+            sevi: { 
+                max: 0, 
+                gigi: 0, 
+                marco: 0, 
+                dezi: 0, 
+                date: getCurrentDateString() 
+            }
+        };
+        
+        // Dynamic server URL detection
+        function getServerUrl() {
+            const hostname = window.location.hostname;
+            const port = window.location.port;
+            
+            // If accessing from localhost without port, default to 3002
+            if ((hostname === 'localhost' || hostname === '127.0.0.1') && !port) {
+                return 'localhost:3002';
+            }
+            
+            // For reverse proxy, use empty string to make relative URLs
+            // This will use the same domain and path as the current page
+            if (!port || port === '80' || port === '443') {
+                return ''; // Use relative URL for reverse proxy
+            }
+            
+            // Use the current hostname and port (handles Docker port mapping)
+            if (port) {
+                return `${hostname}:${port}`;
+            }
+            
+            // Default: use same hostname with port 3002
+            return `${hostname}:3002`;
+        }
+        
+        // Refresh aura data from server
+        async function refreshAuraData() {
+            const serverUrl = getServerUrl();
+            const protocol = window.location.protocol;
+            
+            // Use relative URL for reverse proxy, absolute URL otherwise
+            const apiUrl = serverUrl ? `${protocol}//${serverUrl}/api/aura` : '/api/aura';
+            
+            try {
+                // Add spinning animation to refresh button
+                const refreshBtn = document.querySelector('.refresh-btn svg');
+                if (refreshBtn) {
+                    refreshBtn.style.animation = 'spin 1s linear infinite';
+                }
+                
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                auraData = data.auraData;
+                dailyAuraData = data.dailyAuraData;
+                
+                // Update all displays
+                updateAllAuraDisplays();
+                
+                // Show success notification
+                showAuraNotification('Data Refreshed', 'Aura data has been updated from server', 'info');
+                
+            } catch (error) {
+                console.error('Error refreshing aura data:', error);
+                showAuraNotification('Refresh Failed', 'Failed to update aura data from server', 'error');
+            } finally {
+                // Remove spinning animation
+                const refreshBtn = document.querySelector('.refresh-btn svg');
+                if (refreshBtn) {
+                    refreshBtn.style.animation = '';
+                }
+            }
+        }
+        
+        function updateAllAuraDisplays() {
+            Object.keys(auraData).forEach(person => {
+                updateAuraDisplay(person);
+            });
+        }
+        
+        // Daily limits
+        const DAILY_POSITIVE_LIMIT = 500;
+        const DAILY_NEGATIVE_LIMIT = -500;
+
+        // Helper function to get current date string
+        function getCurrentDateString() {
+            return new Date().toDateString();
+        }
+
+        // Password Modal Functions
+        function showPasswordModal(userName, userInitial, avatarClass) {
+            currentUser = userName;
+            
+            // Update modal content with user info
+            document.querySelector('.password-user-name').textContent = userName.charAt(0).toUpperCase() + userName.slice(1);
+            document.querySelector('.password-user-initial').textContent = userInitial;
+            
+            // Update avatar class
+            const avatar = document.querySelector('.password-avatar .avatar-gradient');
+            avatar.className = 'avatar-gradient ' + avatarClass;
+            
+            // Clear previous input and errors
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').classList.add('hidden');
+            
+            // Show modal
+            document.getElementById('passwordModal').classList.remove('hidden');
+            
+            // Focus on password input
+            setTimeout(() => {
+                document.getElementById('passwordInput').focus();
+            }, 100);
+        }
+
+        function closePasswordModal() {
+            console.log('Closing password modal, currentUser was:', currentUser);
+            document.getElementById('passwordModal').classList.add('hidden');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordError').classList.add('hidden');
+            // Don't reset currentUser here - it might be needed for login
+            // currentUser = null;
+        }
+
+        function authenticateUser() {
+            const password = document.getElementById('passwordInput').value;
+            console.log('Authenticating user:', currentUser, 'with password:', password);
+            
+            if (!password) {
+                showPasswordError('Please enter a password');
+                return;
+            }
+            
+            if (password === userPasswords[currentUser]) {
+                // Successful login
+                console.log('Authentication successful for:', currentUser);
+                closePasswordModal();
+                loginUser(currentUser);
+            } else {
+                // Failed login
+                console.log('Authentication failed for:', currentUser);
+                showPasswordError('Incorrect password. Please try again.');
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            }
+        }
+
+        function showPasswordError(message) {
+            const errorElement = document.getElementById('passwordError');
+            errorElement.textContent = message;
+            errorElement.classList.remove('hidden');
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('passwordInput');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '👁️‍🗨️';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        function handlePasswordKeyPress(event) {
+            if (event.key === 'Enter') {
+                authenticateUser();
+            } else if (event.key === 'Escape') {
+                closePasswordModal();
+            }
+        }
+
+        // Original Functions
+        function loginUser(name) {
+            console.log('Logging in user:', name);
+            // Update dashboard with user info
+            const userInitial = name.charAt(0).toUpperCase();
+            const avatarClass = 'avatar-' + (name === 'max' ? '1' : name === 'sarah' ? '2' : '3');
+            
+            document.querySelector('.user-initial-small').textContent = userInitial;
+            document.querySelector('.user-name-small').textContent = name.charAt(0).toUpperCase() + name.slice(1);
+            document.querySelector('.user-avatar-small .avatar-gradient').className = 'avatar-gradient ' + avatarClass;
+            
+            // Switch screens
+            console.log('Switching to dashboard...');
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            console.log('Dashboard should now be visible');
+            
+            // Load user's background after switching screens
+            setTimeout(() => {
+                loadSavedBackground();
+            }, 100);
+        }
+        
+        function logout() {
+            document.getElementById('dashboardScreen').classList.add('hidden');
+            document.getElementById('loginScreen').classList.remove('hidden');
+        }
+        
+        function updateDailyStatus() {
+            if (!currentUser) return;
+            
+            checkAndResetDailyData();
+            
+            // Calculate total given across all users
+            let totalGiven = 0;
+            let totalTaken = 0;
+            let activeLimits = 0;
+            
+            Object.keys(dailyAuraData[currentUser]).forEach(person => {
+                if (person !== 'date') {
+                    const amount = dailyAuraData[currentUser][person];
+                    if (amount > 0) {
+                        totalGiven += amount;
+                        activeLimits++;
+                    } else if (amount < 0) {
+                        totalTaken += Math.abs(amount);
+                        activeLimits++;
+                    }
+                }
+            });
+            
+            const dailyNetElement = document.getElementById('dailyNet');
+            const dailyLimitsElement = document.getElementById('dailyLimits');
+            
+            if (dailyNetElement) {
+                const netText = `Given: +${totalGiven} | Taken: -${totalTaken}`;
+                dailyNetElement.textContent = netText;
+                dailyNetElement.style.color = 'var(--text-primary)'; // white
+            }
+            
+            if (dailyLimitsElement) {
+                dailyLimitsElement.textContent = `Active: ${activeLimits} users`;
+                dailyLimitsElement.style.color = 'var(--text-secondary)'; // secondary color
+            }
+        }
+        
+        function updateCardLimits() {
+            if (!currentUser) return;
+            
+            checkAndResetDailyData();
+            
+            // Update limit display for each person card
+            ['max', 'gigi', 'marco', 'dezi', 'sevi'].forEach(person => {
+                if (person === currentUser) return; // Skip current user
+                
+                const limitElement = document.getElementById(`limit-${person}`);
+                if (limitElement) {
+                    const currentGiven = dailyAuraData[currentUser][person] || 0;
+                    const remainingPositive = DAILY_POSITIVE_LIMIT - Math.max(0, currentGiven);
+                    const remainingNegative = Math.abs(DAILY_NEGATIVE_LIMIT - Math.min(0, currentGiven));
+                    
+                    let limitText;
+                    if (currentGiven >= 0) {
+                        limitText = `+${remainingPositive} / -${remainingNegative}`;
+                        limitElement.style.color = '#4ade80'; // green for positive
+                    } else {
+                        limitText = `+${remainingPositive} / -${remainingNegative}`;
+                        limitElement.style.color = '#f87171'; // red for negative
+                    }
+                    
+                    limitElement.textContent = limitText;
+                }
+            });
+        }
+        
+        function openApp(app) {
+            if (app === 'aura-tracker') {
+                // Load fresh data from server when opening the app
+                refreshAuraData();
+                
+                // Disable buttons for current user's card
+                updateCardButtonStates();
+                
+                // Show/hide aura control button based on user
+                const auraControlBtn = document.getElementById('auraControlBtn');
+                if (currentUser === 'max') {
+                    auraControlBtn.style.display = 'flex';
+                } else {
+                    auraControlBtn.style.display = 'none';
+                }
+                
+                // Hide dashboard and show Aura Tracker screen
+                document.getElementById('dashboardScreen').classList.add('hidden');
+                document.getElementById('auraTrackerScreen').classList.remove('hidden');
+            } else {
+                alert('Opening ' + app + '...');
+            }
+        }
+        
+        function closeApp(app) {
+            if (app === 'aura-tracker') {
+                // Hide Aura Tracker and show dashboard
+                document.getElementById('auraTrackerScreen').classList.add('hidden');
+                document.getElementById('dashboardScreen').classList.remove('hidden');
+            }
+        }
+        
+        function selectPerson(person) {
+            alert('Selected: ' + person.charAt(0).toUpperCase() + person.slice(1));
+        }
+        
+        function updateAuraDisplay(person) {
+            const personCard = document.querySelector(`[onclick="selectPerson('${person}')"]`);
+            if (personCard) {
+                const auraNumberElement = personCard.querySelector('.aura-number');
+                if (auraNumberElement) {
+                    auraNumberElement.textContent = auraData[person];
+                }
+            }
+        }
+        
+        function cardAction(person, action) {
+            // Prevent users from modifying their own aura
+            if (person === currentUser) {
+                showAuraNotification('Access Denied', 'You cannot modify your own aura points!', 'error');
+                return;
+            }
+            
+            // Send update to server via HTTP API
+            const serverUrl = getServerUrl();
+            const protocol = window.location.protocol;
+            
+            // Use relative URL for reverse proxy, absolute URL otherwise
+            const apiUrl = serverUrl ? `${protocol}//${serverUrl}/api/aura` : '/api/aura';
+            
+            const requestBody = {
+                person,
+                action,
+                currentUser
+            };
+            
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestBody)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.error) {
+                    showAuraNotification('Limit Reached', data.error, 'warning');
+                } else if (data.success) {
+                    // Update local data with the new value from server
+                    if (data.auraData && data.auraData[person] !== undefined) {
+                        auraData[person] = data.auraData[person];
+                        updateAuraDisplay(person);
+                    }
+                    showAuraNotification('Success', `${person.charAt(0).toUpperCase() + person.slice(1)} aura updated successfully`, 'info');
+                }
+            })
+            .catch(error => {
+                console.error('HTTP API error:', error);
+                showAuraNotification('Connection Error', 'Failed to update aura. Please try again.', 'error');
+            });
+            
+            // Add visual feedback immediately (optimistic UI)
+            const personCard = document.querySelector(`[onclick="selectPerson('${person}')"]`);
+            if (personCard) {
+                personCard.classList.add('aura-updated');
+                setTimeout(() => {
+                    personCard.classList.remove('aura-updated');
+                }, 300);
+            }
+        }
+        
+        function checkAndResetDailyData() {
+            const today = getCurrentDateString();
+            
+            // Check if it's a new day for current user
+            if (dailyAuraData[currentUser].date !== today) {
+                // Reset daily data for current user (reset all per-user limits)
+                const resetData = { date: today };
+                Object.keys(dailyAuraData[currentUser]).forEach(key => {
+                    if (key !== 'date') {
+                        resetData[key] = 0;
+                    }
+                });
+                dailyAuraData[currentUser] = resetData;
+                
+                // Save the reset data
+                localStorage.setItem('dailyAuraData', JSON.stringify(dailyAuraData));
+            }
+        }
+        
+        // Add spinning animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        function updateCardButtonStates() {
+            // Enable all buttons first
+            document.querySelectorAll('.card-btn').forEach(btn => {
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.style.cursor = 'pointer';
+            });
+            
+            // Disable buttons for current user's card
+            if (currentUser) {
+                const currentUserCard = document.querySelector(`[onclick="selectPerson('${currentUser}')"]`);
+                if (currentUserCard) {
+                    const buttons = currentUserCard.querySelectorAll('.card-btn');
+                    buttons.forEach(btn => {
+                        btn.disabled = true;
+                        btn.style.opacity = '0.3';
+                        btn.style.cursor = 'not-allowed';
+                    });
+                }
+            }
+        }
+        
+        function showAuraNotification(title, message, type = 'info') {
+            const container = document.getElementById('notificationContainer');
+            if (!container) return;
+            
+            // Clear any existing notifications
+            container.innerHTML = '';
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `aura-notification ${type}`;
+            notification.innerHTML = `
+                <h4>${title}</h4>
+                <p>${message}</p>
+            `;
+            
+            // Add to container
+            container.appendChild(notification);
+            
+            // Show container
+            container.classList.add('show');
+            
+            // Animate notification in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Hide container after 3 seconds
+            setTimeout(() => {
+                container.classList.remove('show');
+                setTimeout(() => {
+                    container.innerHTML = '';
+                }, 300);
+            }, 3000);
+        }
+        
+        function testConnection() {
+            console.log('=== CONNECTION TEST ===');
+            const serverUrl = getServerUrl();
+            const protocol = window.location.protocol;
+            const apiUrl = `${protocol}//${serverUrl}/api/aura`;
+            
+            console.log('Testing connection to:', apiUrl);
+            
+            // Test GET request first
+            fetch(apiUrl)
+                .then(response => {
+                    console.log('GET Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('GET Response data:', data);
+                    
+                    // Test POST request
+                    return fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            person: 'test',
+                            action: 'test',
+                            currentUser: 'test'
+                        })
+                    });
+                })
+                .then(response => {
+                    console.log('POST Response status:', response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('POST Response data:', data);
+                    showAuraNotification('Connection Test', 'API connection successful!', 'info');
+                })
+                .catch(error => {
+                    console.error('Connection test failed:', error);
+                    showAuraNotification('Connection Test Failed', 'API connection failed. Check console for details.', 'error');
+                });
+        }
+        
+        function viewDetails() {
+            testConnection();
+        }
+        
+        // Marketplace Functions
+        function openMarketplace() {
+            // Update gem count
+            const gemCountElement = document.getElementById('gemCount');
+            if (gemCountElement && currentUser) {
+                const userAura = auraData[currentUser] || 0;
+                gemCountElement.textContent = userAura;
+            }
+            
+            document.getElementById('marketplaceModal').classList.remove('hidden');
+        }
+        
+        function closeMarketplace() {
+            document.getElementById('marketplaceModal').classList.add('hidden');
+        }
+        
+        function switchTab(tabName) {
+            // Remove active class from all tabs and panes
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to selected tab and pane
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            document.getElementById(tabName + 'Pane').classList.add('active');
+        }
+        
+        function selectBackground(bgName) {
+            console.log('selectBackground called with:', bgName);
+            
+            // Apply the selected background
+            const background = document.querySelector('.background');
+            console.log('Background element found:', !!background);
+            
+            if (!background) {
+                console.error('Background element not found!');
+                return;
+            }
+            
+            // Apply new background with !important to override CSS
+            switch(bgName) {
+                case 'gradient1':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', 'important');
+                    break;
+                case 'gradient2':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', 'important');
+                    break;
+                case 'gradient3':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #1b5e20 0%, #004d40 100%)', 'important');
+                    break;
+                case 'gradient4':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', 'important');
+                    break;
+                case 'gradient5':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', 'important');
+                    break;
+                case 'gradient6':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)', 'important');
+                    break;
+                case 'gradient7':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #4a148c 0%, #880e4f 100%)', 'important');
+                    break;
+                case 'gradient8':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%)', 'important');
+                    break;
+                case 'gradient9':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #01579b 0%, #004d40 100%)', 'important');
+                    break;
+                case 'gradient10':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #b71c1c 0%, #880e4f 100%)', 'important');
+                    break;
+                case 'gradient11':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #1b5e20 0%, #004d40 100%)', 'important');
+                    break;
+                case 'gradient12':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #a8caba 0%, #5d4157 100%)', 'important');
+                    break;
+                case 'gradient13':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #ff6f00 0%, #bf360c 100%)', 'important');
+                    break;
+                case 'gradient14':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #1a237e 0%, #283593 100%)', 'important');
+                    break;
+                case 'gradient15':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #667db6 0%, #0082c8 100%)', 'important');
+                    break;
+                case 'gradient16':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #f83600 0%, #f9d423 100%)', 'important');
+                    break;
+                case 'gradient17':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)', 'important');
+                    break;
+                case 'gradient18':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #bf360c 0%, #e65100 100%)', 'important');
+                    break;
+                case 'gradient19':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #0d47a1 0%, #1565c0 100%)', 'important');
+                    break;
+                case 'gradient20':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)', 'important');
+                    break;
+                case 'gradient21':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #134e5e 0%, #71b280 100%)', 'important');
+                    break;
+                case 'gradient22':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #870000 0%, #190a05 100%)', 'important');
+                    break;
+                case 'gradient23':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #0d47a1 0%, #01579b 100%)', 'important');
+                    break;
+                case 'gradient24':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%)', 'important');
+                    break;
+                case 'gradient25':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #ff6b35 0%, #f77737 100%)', 'important');
+                    break;
+                case 'gradient26':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)', 'important');
+                    break;
+                case 'gradient27':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #434343 0%, #000000 100%)', 'important');
+                    break;
+                case 'gradient28':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)', 'important');
+                    break;
+                case 'gradient29':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #ff0084 0%, #33001b 100%)', 'important');
+                    break;
+                case 'gradient30':
+                    background.style.setProperty('background', 'linear-gradient(135deg, #004d40 0%, #00695c 100%)', 'important');
+                    break;
+            }
+            
+            // Save to localStorage per user
+            try {
+                const storageKey = `selectedBackground_${currentUser}`;
+                localStorage.setItem(storageKey, bgName);
+                console.log('Background saved to localStorage for user', currentUser, ':', bgName);
+                
+                // Verify it was saved
+                const verify = localStorage.getItem(storageKey);
+                console.log('Verification - saved background:', verify);
+            } catch (error) {
+                console.error('Error saving to localStorage:', error);
+            }
+            
+            showAuraNotification('Background Changed', 'Your background has been saved!', 'success');
+        }
+        
+        function loadSavedBackground() {
+            console.log('loadSavedBackground called for user:', currentUser);
+            
+            if (!currentUser) {
+                console.log('No current user, skipping background load');
+                return;
+            }
+            
+            try {
+                const storageKey = `selectedBackground_${currentUser}`;
+                const savedBg = localStorage.getItem(storageKey);
+                console.log('Saved background from localStorage for user', currentUser, ':', savedBg);
+                
+                if (savedBg) {
+                    console.log('Found saved background, applying:', savedBg);
+                    selectBackground(savedBg);
+                } else {
+                    console.log('No saved background found for user:', currentUser);
+                }
+            } catch (error) {
+                console.error('Error loading from localStorage:', error);
+            }
+        }
+        
+        // Aura Control Functions
+        function openAuraControl() {
+            if (currentUser !== 'max') {
+                showAuraNotification('Access Denied', 'Only Max can access aura control', 'error');
+                return;
+            }
+            
+            document.getElementById('auraControlModal').classList.remove('hidden');
+        }
+        
+        function closeAuraControl() {
+            document.getElementById('auraControlModal').classList.add('hidden');
+        }
+        
+        function refreshAuraControl() {
+            refreshAuraData().then(() => {
+                showAuraNotification('Data Refreshed', 'Aura data has been updated', 'info');
+            });
+        }
+        
+        function resetAllAura() {
+            if (!confirm('Are you sure you want to reset ALL users\' aura to 0? This action cannot be undone.')) {
+                return;
+            }
+            
+            const serverUrl = getServerUrl();
+            const protocol = window.location.protocol;
+            const apiUrl = serverUrl ? `${protocol}//${serverUrl}/api/aura/admin/reset` : '/api/aura/admin/reset';
+            
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    adminUser: currentUser
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    // Reset local data
+                    Object.keys(auraData).forEach(userId => {
+                        auraData[userId] = 0;
+                        updateAuraDisplay(userId);
+                    });
+                    loadAuraControls();
+                    showAuraNotification('Success', 'All aura has been reset to 0', 'success');
+                } else {
+                    showAuraNotification('Error', data.error || 'Failed to reset aura', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Reset aura error:', error);
+                // Fallback: reset locally if server fails
+                Object.keys(auraData).forEach(userId => {
+                    auraData[userId] = 0;
+                    updateAuraDisplay(userId);
+                });
+                loadAuraControls();
+                showAuraNotification('Local Reset', 'All aura has been reset to 0 (local only)', 'warning');
+            });
+        }
+        
+        // Initialize event listeners when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            showScreen('loginScreen');
+            testConnection();
+            
+            // Close modal when clicking outside
+            document.addEventListener('click', function(event) {
+                const modal = document.getElementById('passwordModal');
+                if (event.target === modal) {
+                    closePasswordModal();
+                }
+            });
+            
+            // Prevent modal content clicks from closing modal
+            const modalContent = document.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+            }
+        });
+        
+            </script>
+</body>
+</html>

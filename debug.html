@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-button { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        .log { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Aura OS Debug Test</h1>
+    <button class="test-button" onclick="testPasswordModal()">Test Password Modal</button>
+    <button class="test-button" onclick="testAuthentication()">Test Authentication</button>
+    <button class="test-button" onclick="testLoginUser()">Test Login User</button>
+    <div id="logOutput" class="log">Console logs will appear here...</div>
+
+    <script>
+        // Copy the same functions from main file
+        const userPasswords = {
+            'max': '1234',
+            'sarah': 'password',
+            'alex': 'alex123'
+        };
+
+        let currentUser = 'max';
+
+        function log(message) {
+            console.log(message);
+            document.getElementById('logOutput').innerHTML += '<br>' + message;
+        }
+
+        function testPasswordModal() {
+            log('Testing password modal functions...');
+            log('currentUser: ' + currentUser);
+            log('userPasswords.max: ' + userPasswords.max);
+        }
+
+        function testAuthentication() {
+            log('Testing authentication...');
+            const password = '1234';
+            log('Checking password: ' + password + ' against user: ' + currentUser);
+            
+            if (password === userPasswords[currentUser]) {
+                log('✓ Authentication successful!');
+                testLoginUser();
+            } else {
+                log('✗ Authentication failed!');
+            }
+        }
+
+        function testLoginUser() {
+            log('Testing loginUser function...');
+            log('Would switch to dashboard for user: ' + currentUser);
+        }
+    </script>
+</body>
+</html>

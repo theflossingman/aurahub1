@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Console Test</title>
+</head>
+<body>
+    <h1>Console Test - Check Browser Console</h1>
+    <button onclick="runTests()">Run Tests</button>
+    <div id="results"></div>
+    
+    <script>
+        function runTests() {
+            console.log('=== Starting Authentication Test ===');
+            
+            // Test 1: Check if currentUser is set
+            let currentUser = 'max';
+            console.log('Test 1 - currentUser:', currentUser);
+            
+            // Test 2: Check userPasswords object
+            const userPasswords = {
+                'max': '1234',
+                'sarah': 'password',
+                'alex': 'alex123'
+            };
+            console.log('Test 2 - userPasswords:', userPasswords);
+            
+            // Test 3: Check password comparison
+            const testPassword = '1234';
+            const isMatch = testPassword === userPasswords[currentUser];
+            console.log('Test 3 - Password match:', isMatch);
+            console.log('Test 3 - Expected password:', userPasswords[currentUser]);
+            console.log('Test 3 - Actual password:', testPassword);
+            
+            // Test 4: Check DOM elements (simulate)
+            console.log('Test 4 - DOM element access simulation');
+            console.log('Would call: document.getElementById("loginScreen")');
+            console.log('Would call: document.getElementById("dashboardScreen")');
+            
+            // Test 5: Check if functions exist
+            console.log('Test 5 - Function checks:');
+            console.log('authenticateUser function exists:', typeof authenticateUser !== 'undefined');
+            console.log('loginUser function exists:', typeof loginUser !== 'undefined');
+            
+            document.getElementById('results').innerHTML = '<p>Check browser console for detailed test results</p>';
+        }
+    </script>
+</body>
+</html>

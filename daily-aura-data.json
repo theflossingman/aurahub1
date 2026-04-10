@@ -1,0 +1,40 @@
+{
+  "max": {
+    "dezi": 0,
+    "gigi": 0,
+    "marco": 0,
+    "sevi": 0,
+    "date": "Fri Apr 10 2026",
+    "max": 0
+  },
+  "gigi": {
+    "max": 0,
+    "dezi": 0,
+    "marco": 0,
+    "sevi": 0,
+    "date": "Fri Apr 10 2026"
+  },
+  "marco": {
+    "max": 0,
+    "gigi": 0,
+    "dezi": 0,
+    "sevi": 0,
+    "date": "Fri Apr 10 2026",
+    "marco": 0
+  },
+  "dezi": {
+    "max": 0,
+    "gigi": 0,
+    "marco": 0,
+    "sevi": 0,
+    "date": "Fri Apr 10 2026",
+    "dezi": 0
+  },
+  "sevi": {
+    "max": 0,
+    "gigi": 0,
+    "marco": 0,
+    "dezi": 0,
+    "date": "Fri Apr 10 2026"
+  }
+}

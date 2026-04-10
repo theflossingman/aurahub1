@@ -1,0 +1,39 @@
+{
+  "name": "aura-os",
+  "version": "1.0.0",
+  "description": "A beautiful family PWA dashboard inspired by Umbrel OS with liquid glass animations",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server-backend.js",
+    "dev": "nodemon server-backend.js",
+    "serve": "node -e \"require('http').createServer(require('fs').readFileSync('index.html')).listen(3000, () => console.log('Aura OS running on http://localhost:3000'))\"",
+    "docker:build": "docker build -t aura-os .",
+    "docker:run": "docker run -p 3002:3002 --name aura-os aura-os",
+    "docker:compose": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "pwa",
+    "dashboard",
+    "family",
+    "glassmorphism",
+    "umbrel-os",
+    "aura-os"
+  ],
+  "author": "Max",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
